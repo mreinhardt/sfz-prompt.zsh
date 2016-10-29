@@ -93,7 +93,11 @@ prompt_sfz_precmd() {
     [[ -n $jobs ]] && prompt_sfz_jobs="%F{242}["${(j:,:)jobs}"] "
 
     PROMPT="$prompt_sfz_jobs%F{yellow}$prompt_sfz_tmux%(?.%F{blue}.%B%F{red})$PROMPT_SFZ_CHAR%f%b "
-    RPROMPT="%F{yellow}`prompt_sfz_cmd_exec_time`%f%F{blue}`prompt_sfz_pwd`%F{242}$vcs_info_msg_0_`prompt_sfz_git_dirty`$prompt_sfz_host%f"
+
+    prompt_sfz_virtualenv=""
+    [[ "$PROMPT_SFZ_VIRTUALENV_DISABLED" == '' && "$VIRTUAL_ENV" != '' ]] && prompt_sfz_virtualenv=" %f(%F{green}${VIRTUAL_ENV:t}%f)"
+
+    RPROMPT="%F{yellow}`prompt_sfz_cmd_exec_time`%f%F{blue}`prompt_sfz_pwd`%F{242}$vcs_info_msg_0_`prompt_sfz_git_dirty`$prompt_sfz_virtualenv$prompt_sfz_host%f"
 
     unset cmd_timestamp # reset value since `preexec` isn't always triggered
 }
