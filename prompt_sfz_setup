@@ -98,7 +98,7 @@ prompt_sfz_precmd() {
     prompt_sfz_jobs=""
     [[ -n $jobs ]] && prompt_sfz_jobs="%F{242}[%F{magenta}"${(j:,:)jobs}"%F{242}]%f "
 
-    PROMPT="$prompt_sfz_jobs%F{yellow}$prompt_sfz_tmux%F{242}$(prompt_sfz_pwd) %(?.%F{blue}.%B%F{red})$PROMPT_SFZ_CHAR%f%b "
+    PROMPT="$prompt_sfz_jobs%F{yellow}$prompt_sfz_tmux%F{242}$(prompt_sfz_pwd) %(?..%B%F{red}«%?» )%B%F{blue}$PROMPT_SFZ_CHAR%f%b "
 
     prompt_sfz_virtualenv=""
     [[ "$PROMPT_SFZ_VIRTUALENV_DISABLED" == '' && "$VIRTUAL_ENV" != '' ]] && prompt_sfz_virtualenv=" %f(%F{green}${VIRTUAL_ENV:t}%f)"
