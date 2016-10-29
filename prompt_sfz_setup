@@ -5,14 +5,15 @@
 #
 # MIT License
 
-PROMPT_SFZ_TMUX=${PROMPT_SFZ_TMUX-"t "}
+PROMPT_SFZ_CHAR=${PROMPT_SFZ_CHAR-"§"}
+PROMPT_SFZ_TMUX=${PROMPT_SFZ_TMUX-"™ "}
 PROMPT_SFZ_PATH_PERCENT=${PROMPT_SFZ_PATH_PERCENT-60}
 
 prompt_sfz_help() {
   cat <<'EOF'
 This is a one line prompt that tries to stay out of your face. It utilizes
 the right side prompt for most information, like the CWD. The left side of
-the prompt is only a '%'. The only other information shown on the left are
+the prompt is only a '§'. The only other information shown on the left are
 the jobs numbers of background jobs. When the exit code of a process isn't
 zero the prompt turns red. If a process takes more then 5 (default) seconds
 to run the total running time is shown in the next prompt.
@@ -91,7 +92,7 @@ prompt_sfz_precmd() {
     prompt_sfz_jobs=""
     [[ -n $jobs ]] && prompt_sfz_jobs="%F{242}["${(j:,:)jobs}"] "
 
-    PROMPT="$prompt_sfz_jobs%F{yellow}$prompt_sfz_tmux%(?.%F{blue}.%B%F{red})%#%f%b "
+    PROMPT="$prompt_sfz_jobs%F{yellow}$prompt_sfz_tmux%(?.%F{blue}.%B%F{red})$PROMPT_SFZ_CHAR%f%b "
     RPROMPT="%F{yellow}`prompt_sfz_cmd_exec_time`%f%F{blue}`prompt_sfz_pwd`%F{242}$vcs_info_msg_0_`prompt_sfz_git_dirty`$prompt_sfz_host%f"
 
     unset cmd_timestamp # reset value since `preexec` isn't always triggered
