@@ -34,10 +34,10 @@ prompt_sfz_human_time() {
     local hours=$(( tmp / 60 / 60 % 24 ))
     local minutes=$(( tmp / 60 % 60 ))
     local seconds=$(( tmp % 60 ))
-    (( $days > 0 )) && echo -n "${days}d "
-    (( $hours > 0 )) && echo -n "${hours}h "
-    (( $minutes > 0 )) && echo -n "${minutes}m "
-    echo "${seconds}s "
+    (( $days > 0 )) && echo -n "${days}d"
+    (( $hours > 0 )) && echo -n "${hours}h"
+    (( $minutes > 0 )) && echo -n "${minutes}m"
+    echo "${seconds}s"
 }
 
 # return git repo status indicators
@@ -103,7 +103,7 @@ prompt_sfz_precmd() {
     prompt_sfz_virtualenv=""
     [[ "$PROMPT_SFZ_VIRTUALENV_DISABLED" == '' && "$VIRTUAL_ENV" != '' ]] && prompt_sfz_virtualenv=" %f(%F{green}${VIRTUAL_ENV:t}%f)"
 
-    RPROMPT="%F{yellow}$(prompt_sfz_cmd_exec_time)%f%F{242}$vcs_info_msg_0_$(prompt_sfz_git_dirty)$prompt_sfz_virtualenv$prompt_sfz_host%f"
+    RPROMPT="%F{cyan}$(prompt_sfz_cmd_exec_time)%F{242}$vcs_info_msg_0_$(prompt_sfz_git_dirty)$prompt_sfz_virtualenv$prompt_sfz_host%f"
 
     unset cmd_timestamp # reset value since `preexec` isn't always triggered
 }
