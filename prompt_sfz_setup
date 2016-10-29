@@ -40,15 +40,21 @@ prompt_sfz_human_time() {
     echo "${seconds}s "
 }
 
-# fastest possible way to check if repo is dirty
+# return git repo status indicators
 prompt_sfz_git_dirty() {
     # check if we're in a git repo
     command git rev-parse --is-inside-work-tree &>/dev/null || return
-    # check if it's dirty
-    local umode="-uno" #|| local umode="-unormal"
-    command test -n "$(git status --porcelain --ignore-submodules ${umode} 2>/dev/null | head -100)"
-
-    (($? == 0)) && echo ' %F{red}+%f'
+    # get set of status indicators
+    local git_status="$(git status --porcelain --ignore-submodules | cut -c1-2 | grep -o . | sort -u | paste -s -d'\0' - | tr -d ' ')"
+    [[ "${git_status}" == "" ]] && echo "" && return
+    # colorize indicators by status
+    echo " ${git_status}%f" | sed -e 's/?/%F{white}?/' \
+                                  -e 's/M/%F{yellow}M/' \
+                                  -e 's/A/%F{green}A/' \
+                                  -e 's/D/%F{red}D/' \
+                                  -e 's/R/%F{magenta}R/' \
+                                  -e 's/C/$F{cyan}C/' \
+                                  -e 's/U/%F{blue}U/'
 }
 
 # displays the exec time of the last command if set threshold was exceeded
@@ -90,7 +96,7 @@ prompt_sfz_precmd() {
     }
     # print with [ ] and comma separated
     prompt_sfz_jobs=""
-    [[ -n $jobs ]] && prompt_sfz_jobs="%F{242}["${(j:,:)jobs}"] "
+    [[ -n $jobs ]] && prompt_sfz_jobs="%F{242}[%F{magenta}"${(j:,:)jobs}"%F{242}]%f "
 
     PROMPT="$prompt_sfz_jobs%F{yellow}$prompt_sfz_tmux%(?.%F{blue}.%B%F{red})$PROMPT_SFZ_CHAR%f%b "
 
